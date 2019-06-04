@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE MODE SYSTEM "xmode.dtd">
+
+<!-- jedit mode file for the RFO BASIC! language, by Nicolas Mougin -->
+<MODE>
+	<PROPS>
+		<PROPERTY NAME="commentStart" VALUE="^\s*!!\s*$" />
+		<PROPERTY NAME="commentEnd" VALUE="^\s*!!\s*$" />
+		<PROPERTY NAME="lineComment" VALUE="%" />
+    <PROPERTY NAME="ignoreWhitespace" VALUE="true" />
+
+    <!-- Auto indent -->
+		<PROPERTY NAME="indentNextLine"
+			VALUE="\s*(if|do|while|sw.begin|sw.case|else\s*$|for)\w+(?!.*(else|then)\s*\w+)" />
+		<PROPERTY NAME="unindentThisLine"
+			VALUE="^.*(end\s*if|until|repeat|sw.break|sw.end)$" />
+	</PROPS>
+
+	<RULES IGNORE_CASE="TRUE" HIGHLIGHT_DIGITS="TRUE" ESCAPE="\">
+		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE">
+			<BEGIN>"</BEGIN>
+			<END>"</END>
+		</SPAN>
+
+		<!-- RFO BASIC! will use either symbol to start a comment -->
+		<EOL_SPAN TYPE="COMMENT1">\s*!</EOL_SPAN>
+		<EOL_SPAN TYPE="COMMENT1">\s*rem</EOL_SPAN>
+
+		<!-- Comparison operators -->
+		<SEQ TYPE="OPERATOR">&lt;</SEQ>
+		<SEQ TYPE="OPERATOR">&lt;=</SEQ>
+		<SEQ TYPE="OPERATOR">&gt;=</SEQ>
+		<SEQ TYPE="OPERATOR">&gt;</SEQ>
+		<SEQ TYPE="OPERATOR">=</SEQ>
+		<SEQ TYPE="OPERATOR">&lt;&gt;</SEQ>
+		<SEQ TYPE="OPERATOR">.</SEQ>
+		<!-- See in keywords: is -->
+
+		<!-- Arithmetic operators -->
+		<SEQ TYPE="OPERATOR">+</SEQ>
+		<SEQ TYPE="OPERATOR">-</SEQ>
+		<SEQ TYPE="OPERATOR">*</SEQ>
+		<SEQ TYPE="OPERATOR">/</SEQ>
+		<!-- See in keywords: mod -->
+		<SEQ TYPE="OPERATOR">^</SEQ>
+
+		<!-- Logical operators -->
+		<SEQ TYPE="OPERATOR">&amp;</SEQ>
+		<SEQ TYPE="OPERATOR">|</SEQ>
+		<SEQ TYPE="OPERATOR">!</SEQ>
+
+		<!-- EOL Continuation -->
+<!--		<SEQ TYPE="NULL">~</SEQ>-->
+		<!-- Instruction separator -->
+		<MARK_PREVIOUS TYPE="LABEL" MATCH_TYPE="OPERATOR"
+			AT_LINE_START="TRUE">:</MARK_PREVIOUS>
+
+		<KEYWORDS>

@@ -1,0 +1,458 @@
+GW for RFO-BASIC! APIs cheat sheet
+before loading the lib with INCLUDE "GW.bas":
+►	GW_COLOR$="black" % to display a dark page at startup
+►	GW_SILENT_LOAD=1 % to hide GW lib loading bar
+specify page settings before page creation:
+►	GW_ZOOM_INPUT(0|1) % disable/enable zoom in input controls when being edited (default:1)
+►	theme_name$=GW_THEME$[1] ..to GW_THEME$[9] % see list at http://mougino.free.fr/tmp/GW/
+►	test=GW_THEME_EXISTS (theme_name$) % return true|false if full set of theme-files are on device
+►	GW_DOWNLOAD_THEME (theme_name$) % download all theme files to device
+►	GW_LOAD_THEME (theme_name$) % load a theme to be used by all newly created pages
+►	GW_UNLOAD_THEME () % equivalent to GW_LOAD_THEME ("default")
+►	GW_DEFAULT_TRANSITIONS ("PAGE=fx, PANEL=fx, DIALOG=fx")
+ELEMENT
+
+FX VALUES
+
+PAGE
+
+fade|pop|flip|turn |flow|slidefade|slide |slideup|slidedown|none
+
+PANEL
+
+push|reveal|overlay
+
+DIALOG
+
+fade|pop|flip|turn |flow|slidefade|slide |slideup|slidedown|none
+
+create a new page:
+►	mypage=GW_NEW_PAGE ()
+transform the page:
+►	GW_ADD_LOADING_IMG (mypage, "local.gif", dark) % display image when page loads
+►	GW_USE_FONT (mypage, "font.ttf") % use a default font for the whole page
+►	GW_CENTER_PAGE_VER (mypage) % to center vertically the page content
+►	GW_SET_TRANSITION (mypage|mypnl|mydlg, fx$) % fx$: see table above
+►	GW_PREVENT_SELECT (mypage) % prevent text-selection after a long-press
+►	GW_ALLOW_SELECT (mypage) % allow back select after a long-press (default)
+change layout of controls before adding them:
+►	GW_OPEN_COLLAPSIBLE (mypage, "Title") % to expand/collapse a group of controls
+►	GW_CLOSE_COLLAPSIBLE (mypage)
+►	GW_OPEN_GROUP (mypage) % to visually group checkbox or radio control (custo "inline" possible)
+►	GW_CLOSE_GROUP (mypage)
+►	GW_START_CENTER (mypage) % to visually center elements
+►	GW_STOP_CENTER (mypage)
+►	GW_SHELF_OPEN (mypage) % to organize controls on a same line
+►	GW_SHELF_NEWCELL (mypage) % next control on the line
+►	GW_SHELF_NEWROW (mypage) % go to a new line
+►	GW_SHELF_CLOSE (mypage)
+apply customization to controls:
+►	myfont$=GW_ADD_FONT$ (mypage, "font.ttf")
+►	class=GW_NEW_CLASS ("myclass") % to apply 1 custo on multiple controls
+►	GW_USE_THEME_CUSTO_ONCE ("param1=value1 param2=value2 ...")
+►	mycusto=GW_NEW_THEME_CUSTO ("param1=value1 param2=value2 ...")
+►	GW_CUSTO_DLGBTN (mypage, mydlg, "Button label", "param1=value1 param2=value2 ...")
+►	GW_USE_THEME_CUSTO (mycusto)
+►	GW_RESET_THEME_CUSTO ()
+PARAM
+
+VALUES
+
+color
+
+a|b|c|d|e|f|g (pgbar|slider|button depending on theme)
+
+icon
+
+see http://demos.jquerymobile.com/1.4.5/icons/#Iconset
+
+iconpos
+
+left|right|top|bottom
+
+position
+
+left|right (panel)
+
+notext
+
+<no value needed> (button)
+
+inline
+
+<no value needed> (group|button|dialog*|selectbox)
+
+big
+
+<no value needed> increase size of notext button
+
+mini
+
+<no value needed> decrease size of text button
+
+hover
+
+N|S|E|W|NE|NW|SE|SW
+
+alpha
+
+from 0% to 100%
+
+fit-screen
+
+<no value needed> forces image width <= screen width
+
+style
+
+'color:blue' or any other CSS-formatted string
+
+class
+
+'myclass' as defined in GW_NEW_CLASS ()
+
+font
+
+myfont$ as returned by GW_ADD_FONT$ ()
+
+add page elements:
+►	myttl$=GW_ADD_BAR_TITLE$ ("My titlebar / footbar")
+►	mylbt$=GW_ADD_BAR_LBUTTON$ ("L-Button>ACTION1")
+►	myrbt$=GW_ADD_BAR_RBUTTON$ ("R-Button>ACTION2")
+►	mylmnu$=GW_ADD_BAR_LMENU$ (values$[]) % like a SELECTBOX but in the title/footbar
+►	myrmnu$=GW_ADD_BAR_RMENU$ (values$[]) % add LISTENER on "l|rmenuchange" to track action
+►	mytbar=GW_ADD_TITLEBAR (mypage, mylbt$ + myttl$ + myrmnu$)
+►	myfbar=GW_ADD_FOOTBAR (mypage, mylmnu$ + myttl$ + myrbt$)
+►	mypanl=GW_ADD_PANEL (mypage, "My panel content")
+►	myspin=GW_ADD_SPINNER (mypage, "Message")
+►	mydlgm=GW_ADD_DIALOG_MESSAGE (mypage, "Title", "Message", buttons_and_actions$[]) % "Btn 1>ACTION1"
+►	mydlgc=GW_ADD_DIALOG_CHECKBOX (mypage, "Title", "Message", "Checkbox label", buttons_and_actions$[])
+►	mydlgi=GW_ADD_DIALOG_INPUT (mypage, "Title", "Message", "Default input", buttons_and_actions$[])
+DEFAULT INPUT
+
+INPUT TYPE
+
+".."|"A>.."
+
+Input Line
+
+"0>.."|"1>.."
+
+Input Number
+
+"*>.."
+
+Input Password
+
+"@>.."
+
+Input E-mail
+
+"<>.."
+
+Input Url
+
+add standard controls:
+►	myttl=GW_ADD_TITLE (mypage, "My section title")
+►	mytbx=GW_ADD_TEXTBOX (mypage, s_ini$)
+►	mytxt=GW_ADD_TEXT (mypage, s_ini$)
+►	mylnk=GW_ADD_LINK (mypage, "My link label", "http://www.mylink.com | USER_ACTION")
+►	mybtn=GW_ADD_BUTTON (mypage, "My button label", "http://www.mylink.com | USER_ACTION")
+►	GW_SHOW_PANEL$ (mypnl) % use it as a link in GW_ADD_LINK() or GW_ADD_BUTTON()
+►	GW_SHOW_DIALOG$ (mydlg) % idem for any dialog (message /input /checkbox)
+►	myimg=GW_ADD_IMAGE (mypage, "mypicture.png") % use '>'+action$ after pic name e.g. "exit.png>BYE"
+►	myico=GW_ADD_ICON (mypage, ico$, width, height)
+►	GW_ICON$ (myico) % use it in a titlebar/footbar
+►	mypgb=GW_ADD_PROGRESSBAR (mypage, "My progress bar label")
+►	mytbl=GW_ADD_TABLE (mypage, n_cols, table$[]) % start first element with '>' to indicate a title line
+►	myaud=GW_ADD_AUDIO (mypage, link_to_audio$) % local or webradio
+►	myvid=GW_ADD_VIDEO (mypage, link_to_video$) % local or streaming, add '>' + img_url$ for poster image
+►	my_lv=GW_ADD_LISTVIEW (mypage, values_and_actions$[])
+ARRAY
+
+LISTVIEW TYPE
+
+"#.." (1st elt)
+
+ordered list
+
+">.."
+
+title|separator
+
+"..\n.."
+
+2-line cell
+
+".. (bbl)"
+
+count bubble
+
+"..>AXN"
+
+action
+
+"..@pic.png"
+
+thumbnail
+
+add user input controls:
+►	mychk=GW_ADD_CHECKBOX (mypage, "My checkbox") % use '>' to check by default
+►	myradio=GW_ADD_RADIO (mypage, radio_parent, "My radio button") % use '>' to select by default
+►	myflip=GW_ADD_FLIPSWITCH (mypage, "My flip switch", s_opt1$, s_opt2$) % use '>' to select default option
+►	myslid=GW_ADD_SLIDER (mypage, "My slider label", n_min, n_max, n_step, n_ini)
+►	myselbx=GW_ADD_SELECTBOX (mypage, "My selectbox", values$[]) % listview-popup, use "#" for title/separator
+►	myinpln=GW_ADD_INPUTLINE (mypage, "My input line label", s_ini$)
+►	myinpbx=GW_ADD_INPUTBOX (mypage, "My input box label", s_ini$)
+►	myinpmi=GW_ADD_INPUTMINI (mypage, "1") % 1=initial value
+►	myinpls=GW_ADD_INPUTLIST (mypage, "Hint message", values_and_actions$[]) % use it as a search-bar
+►	myinpnb=GW_ADD_INPUTNUMBER (mypage, "Input Number", s_ini$)
+►	myinppw=GW_ADD_INPUTPASSWORD (mypage, "Input Password", s_ini$)
+►	myinpml=GW_ADD_INPUTEMAIL (mypage, "Input eMail", s_ini$)
+►	myinpurl=GW_ADD_INPUTURL (mypage , "Input URL", s_ini$)
+►	myinptel=GW_ADD_INPUTTEL (mypage , "Input Tel", s_ini$)
+►	myinpdati=GW_ADD_INPUTDATETIME (mypage, "Input Date and Time", s_ini$)
+►	myinpdat=GW_ADD_INPUTDATE (mypage, "Input Date", s_ini$)
+►	myinptim=GW_ADD_INPUTTIME (mypage, "Input Time", s_ini$)
+►	myinpmo=GW_ADD_INPUTMONTH (mypage, "Input Month", s_ini$)
+►	myinpwk=GW_ADD_INPUTWEEK (mypage, "Input Week", s_ini$)
+►	myinpcol=GW_ADD_INPUTCOLOR (mypage, "Input Color", s_ini$)
+►	mysubmit=GW_ADD_SUBMIT (mypage, "My submit button label")
+►	mycolpik=GW_ADD_COLORPICKER (mypage, "Hint message", ini_color$) % ini_color$: hexadecimal "RRGGBB"
+►	mylock=GW_ADD_LOCK_PATTERN (mypage, "options") % options=hide-pattern|4x4...
+add advanced stuff (custom control, listener):
+►	p_h=GW_ADD_PLACEHOLDER (mypage) % to dynamically change parts of the page
+►	GW_FILL_PLACEHOLDER (mypage, p_h, "<some>code</some>")
+►	GW_INJECT_HTML (mypage, "<some>code</some>") % add custom HTML|CSS|JavaScript code
+►	GW_ADD_LISTENER (mypage, ctl_id, event$, action$) % ctl_id=0 listens the whole page
+CONTROL
+
+EVENT
+
+TITLEBAR
+
+"lmenuchange|rmenuchange"
+
+FOOTBAR
+
+"lmenuchange|rmenuchange"
+
+PANEL
+
+"close"
+
+INPUT*
+
+"keydown|clear"
+
+CHECKBOX|FLIPSWITCH|COLORPICKER...
+
+"change"
+
+0|Any control
+
+"swipeleft|swiperight|longpress"
+
+0
+
+"idleN" (N in second e.g. idle30)
+
+render and interact with the page:
+►	GW_RENDER (mypage)
+►	GW_CLOSE_PAGE (mypage)
+►	r$=GW_WAIT_ACTION$ () % Back-key press is returned as "BACK"
+►	GW_ACTION$ () % use it to clear user-input buffer
+►	GW_CLOSE_INPUTLIST (myinpls) % close it after user made a selection
+►	GW_SHOW_DIALOG (mydlg) % manually display a dialog (message /input /checkbox)
+►	GW_CLOSE_DIALOG (mydlg) % manually close a dialog (message /input /checkbox)
+►	GW_SHOW_SPINNER (myspin) % display the spinner manually
+►	GW_HIDE_SPINNER () % manually hide any spinner currently displayed
+►	GW_SHOW_WRONG_PATTERN () % show a wrong lock pattern input
+►	GW_CLEAR_LOCK_PATTERN () % clear the lock pattern
+►	GW_SET_PROGRESSBAR (mypgb, n) % n between 0 and 100
+►	GW_SHOW_PANEL (mypanl) % display the panel manually
+►	GW_CLOSE_PANEL (mypanl) % manually close opened panel
+►	e$=GW_GET_VALUE$ (ctl_id)
+►	n=GW_GET_VALUE (ctl_id)
+►	ctl_name$=GW_ID$ (ctl_id)
+►	ctl_id=GW_ID (ctl_name$)
+►	ctl_id=GW_LAST_ID ()
+►	test=GW_CHECKBOX_CHECKED (ctl_id) % to test if a checkbox is checked
+►	test=GW_RADIO_SELECTED (ctl_id) % to test if a radio button is selected
+►	test=GW_FLIPSWITCH_CHANGED (ctl_id, s_opt1$)
+►	GW_FOCUS (ctl_id)
+►	GW_ENABLE (ctl_id)
+►	GW_DISABLE (ctl_id)
+►	GW_SHOW (ctl_id)
+►	GW_HIDE (ctl_id)
+►	GW_MODIFY (ctl_id, key$, "new value") % key$="value"...|"style:subkey"
+►	GW_AMODIFY (ctl_id, key$, new_values$[]) % Array-Modify
+CONTROL (GW_MODIFY)
+
+KEYS
+
+VALUES
+
+all (inc. CLASS)
+
+style:subkey
+
+TITLEBAR
+
+title|lbutton|rbutton
+
+FOOTBAR
+
+title|lbutton|rbutton
+
+CHECKBOX
+
+checked|text
+
+"0"|"1"
+
+FLIPSWITCH
+
+selected|text
+
+s_opt1$|s_opt2$
+
+RADIO
+
+selected|text
+
+"0"|"1"
+
+SELECTBOX
+
+selected|text
+
+INT$(index)
+
+SLIDER
+
+val|min|max|step|text
+
+TABLE
+
+content
+
+IMAGE
+
+content
+
+AUDIO
+
+content
+
+VIDEO
+
+content
+
+DIALOG_MESSAGE
+
+text|title
+
+DIALOG_INPUT
+
+text|title|input
+
+"A>"|"1>"|"*>"|"@>"|"<>"
+
+DIALOG_CHECKBOX
+
+text|title|checked
+
+"0"|"1"
+
+LINK
+
+text|link
+
+BUTTON
+
+text|link
+
+INPUT*
+
+text|input
+
+COLORPICKER
+
+text|input
+
+TEXT
+
+text
+
+TEXTBOX
+
+text
+
+TITLE
+
+text
+
+SUBMIT
+
+text
+
+SPINNER
+
+text
+
+CONTROL (GW_AMODIFY)
+
+KEYS
+
+VALUES
+
+TITLEBAR
+
+lmenu|rmenu
+
+array$[]
+
+FOOTBAR
+
+lmenu|rmenu
+
+array$[]
+
+LISTVIEW
+
+content
+
+array$[]
+
+TABLE
+
+content
+
+array$[]
+
+SELECTBOX
+
+content
+
+array$[]
+
+INPUTLIST
+
+list
+
+array$[]
+
+DIALOG_*
+
+buttons
+
+array$[]
+
+other special functions:
+►	wxh$=GW_GET_IMAGE_DIM$ (path_to_img$) % return image dimensions "WxH"
+►	l$=GW_LINK$ ("http://mylink.com") % add a final '>' to open link in new tab
+►	GW_DUMP_TO_FILE (mypage, "myfile.html")
+►	GW_DUMP (mypage) % print page content to console
+►	h$=GW_CODE_HIGHLIGHT$ (raw_code$, black$[], blue$[], red$[])
+►	mode=IS_APK () % return 1 if program is running as a user APK, 0 otherwise
+►	JS ("some java script") % execute a JavaScript snippet on the current page
